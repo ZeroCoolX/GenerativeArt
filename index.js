@@ -6,7 +6,17 @@ const fs = require("fs");
 // Import CreateCanvas and LoadImage from ^canvas
 const { createCanvas, loadImage } = require("canvas");
 // Import config.js
-const {layers, WIDTH, HEIGHT, OUTPUT_EXT} = require("./art_input/config.js");
+const {    
+    layers, 
+    WIDTH, 
+    HEIGHT, 
+    OUTPUT_EXT, 
+    description, 
+    baseImageUri, 
+    editionStart,
+    editionEnd, 
+    editionSize
+} = require("./art_input/config.js");
 
 // Metadata
 // TODO rename the metadata to what it actually represents...

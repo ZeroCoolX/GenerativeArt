@@ -4,8 +4,13 @@ const fileSys = require("fs");
 // Modify these as needed
 const WIDTH = 1000;
 const HEIGHT = 1000;
-const INPUT_EXT = "png"
-const OUTPUT_EXT = "png"
+const INPUT_EXT = "png";
+const OUTPUT_EXT = "png";
+const description = "This is a description";
+const baseImageUri = "https://some/url";
+const editionStart = 1;
+const editionEnd = 10;
+const editionSize = 1000;
 
 // removes \\ for / since all systems are ok with / but only windows allows \\
 const universalDir = __dirname.replace(/\\/g, '/');
@@ -83,4 +88,14 @@ const layers = [
     // }
 ];
 
-module.exports = {layers, WIDTH, HEIGHT, OUTPUT_EXT};
+module.exports = {
+    layers, 
+    WIDTH, 
+    HEIGHT, 
+    OUTPUT_EXT, 
+    description, 
+    baseImageUri, 
+    editionStart,
+    editionEnd, 
+    editionSize
+};
