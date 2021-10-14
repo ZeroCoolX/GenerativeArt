@@ -11,6 +11,23 @@ const baseImageUri = "https://some/url";
 const editionStart = 1;
 const editionEnd = 10;
 const editionSize = 1000;
+const rarityWeight = [
+    {
+        value: "legendary",
+        from: 1,
+        to: 1
+    },
+    {
+        value: "rare",
+        from: 2,
+        to: 4
+    },
+    {
+        value: "original",
+        from: 5,
+        to: editionSize
+    }
+]
 
 // removes \\ for / since all systems are ok with / but only windows allows \\
 const universalDir = __dirname.replace(/\\/g, '/');
