@@ -36,6 +36,7 @@ const getImagesForLayer = (_path) =>
     });
 };
 
+// TODO made the art input dir pass-in-able
 // array of layer objects
 //  each layer object consists of information about that layer, including all image choices for that layer
 const layers = [
