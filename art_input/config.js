@@ -1,5 +1,6 @@
 // import file system
 const fileSys = require("fs");
+const fileSys2 = require("fs");
 
 // Modify these as needed
 const WIDTH = 1000;
@@ -14,7 +15,6 @@ const editionSize = 1000;
 
 // removes \\ for / since all systems are ok with / but only windows allows \\
 const universalDir = __dirname.replace(/\\/g, '/');
-
 // removes the file extension
 const cleanName = (_dirtyName) =>
 {
@@ -41,52 +41,38 @@ const getImagesForLayer = (_path) =>
     });
 };
 
-// TODO made the art input dir pass-in-able
+const getConfigValues = (_layerDir) => 
+{
+    let configFile = `${_layerDir}/config.json`;
+    let configObj = {canvasPosition:{x:0,y:0},size:{width:1000,height:1000}};
+    if(fileSys.existsSync(configFile))
+    {
+        configObj = JSON.parse(fileSys.readFileSync(configFile, 'utf8'));
+    }
+    return configObj;
+};
+
+const getAllDirs = (_path) => {
+    return fileSys.readdirSync(_path, {withFileTypes: true})
+    .filter(dirent => dirent.isDirectory())
+    .map((_entry, _index) => {
+        let dir = `${universalDir}/${_entry.name}`;
+        let configData = getConfigValues(dir);
+        let layer = {
+            layerId: _index+1,
+            layerName: _entry.name,
+            layerLocation: `${dir}/`,
+            images: getImagesForLayer(`${dir}/`),
+            positionOnCanvas: configData.canvasPosition,
+            size: configData.size
+        };
+        return layer;
+    });
+};
+
 // array of layer objects
 //  each layer object consists of information about that layer, including all image choices for that layer
-const layers = [
-    {
-        layerId: 1,
-        layerName: "background",
-        layerLocation: `${universalDir}/background/`,
-        images: getImagesForLayer(`${universalDir}/background/`),
-        positionOnCanvas: {x:0, y:0},
-        size: {width:WIDTH, height:HEIGHT}
-    },
-    {
-        layerId: 2,
-        layerName: "catgirl",
-        layerLocation: `${universalDir}/catgirl/`,
-        images: getImagesForLayer(`${universalDir}/catgirl/`),
-        positionOnCanvas: {x:0, y:0},
-        size: {width:WIDTH, height:HEIGHT}
-    },
-    {
-        layerId: 3,
-        layerName: "heart",
-        layerLocation: `${universalDir}/heart/`,
-        images: getImagesForLayer(`${universalDir}/heart/`),
-        positionOnCanvas: {x:0, y:0},
-        size: {width:WIDTH, height:HEIGHT}
-    },
-    {
-        // TODO: remove layerId and layerName perhaps
-        layerId: 4,
-        layerName: "speech_bubble",
-        layerLocation: `${universalDir}/speech_bubble/`,
-        images: getImagesForLayer(`${universalDir}/speech_bubble/`),
-        positionOnCanvas: {x:0, y:0},
-        size: {width:WIDTH, height:HEIGHT}
-    },
-    // {
-    //     layerId: 5,
-    //     layerName: "cat_peeking",
-    //     layerLocation: `${universalDir}/cat_peeking/`,
-    //     images: getImagesForLayer(`${universalDir}/cat_peeking/`),
-    //     positionOnCanvas: {x:0, y:0},
-    //     size: {width:WIDTH, height:HEIGHT}
-    // }
-];
+const layers = getAllDirs(__dirname);
 
 module.exports = {
     layers, 
